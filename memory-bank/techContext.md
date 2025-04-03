@@ -33,5 +33,6 @@
 *   **React Native:** 核心前端框架。
 *   **YouTube Music API:** 提供音乐搜索功能。
 *   **(后端)** Web Scraping 库 (例如: Cheerio, Puppeteer - 如果在后端实现): 用于抓取和解析网页内容。
-*   **(后端)** HTTP Client (例如: Axios, Fetch API): 用于与 YouTube Music API 通信。
-*   **(潜在)** AI/NLP 库/服务: 如果采用 AI 方式提取音乐信息。
+ *   **(后端)** HTTP Client (例如: Axios, Fetch API): 用于与 YouTube Music API 通信。
+ *   **(潜在)** AI/NLP 库/服务: 如果采用 AI 方式提取音乐信息。
+ *   **状态管理 (前端):** 初期使用 React `useState` 和/或 `Context API`。后续可根据复杂度评估引入 Zustand 或 Redux。
