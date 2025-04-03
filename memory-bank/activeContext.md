@@ -2,19 +2,22 @@
 
 ## 当前焦点 (Current Focus)
 
-*   **项目初始化:** 设置 React Native 项目结构，配置开发环境。
-*   **MVP 核心功能:** 开始规划和实现 MVP 的核心用户流程，包括 URL 输入、后端（或本地）处理逻辑的初步设计，以及与 YouTube Music API 的集成点。
+*   **准备第二阶段:** 规划和开始实现后端 Serverless Function，用于处理网页抓取、解析和音乐提取。
 
 ## 最近的变更 (Recent Changes)
 
-*   **记忆库初始化:** 根据项目简报更新了所有核心记忆库文件 (`projectbrief.md`, `productContext.md`, `systemPatterns.md`, `techContext.md`, `activeContext.md`, `progress.md`)。
+*   **完成第一阶段测试:** 验证了开发环境，修复了 Gradle 构建问题 (TLSv1.2)，并成功在模拟器上运行了基础 UI。
+*   **更新 Memory Bank:** 更新了 `progress.md` 和 `activeContext.md` 以反映当前状态。
+*   **代码同步:** 将所有更改提交并推送到 GitHub。
 
 ## 下一步计划 (Next Steps)
 
-*   **环境搭建:** 确保 React Native 开发环境和 Android 模拟器/设备正常工作。
-*   **基础 UI:** 创建 MVP 所需的基本 UI 界面（URL 输入框、按钮、结果显示区域）。
-*   **后端/逻辑设计:** 确定网页解析和音乐提取的具体实现方式（前端处理、后端 Serverless Function，或混合）。
-*   **API 集成:** 研究并准备集成 YouTube Music API。
+*   **后端开发 (第二阶段):**
+    *   创建 Vercel 项目。
+    *   设置 Node.js Serverless Function。
+    *   实现 URL 接收、网页抓取 (`axios`) 和 HTML 解析 (`cheerio`)。
+    *   开发初步的音乐信息提取逻辑。
+*   **前端集成:** 在 `app/App.tsx` 中添加调用后端 Function 的逻辑。
 
 ## 当前决策与考虑 (Active Decisions & Considerations)
 

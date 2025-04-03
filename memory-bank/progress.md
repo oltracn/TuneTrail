@@ -11,6 +11,8 @@
     *   [x] 实现基础 UI 骨架 (`app/App.tsx`)，包括 URL 输入框、按钮和结果占位符。
     *   [x] 使用 `useState` 进行基础状态管理。
     *   [x] 更新 `techContext.md` 和 `progress.md`。
+    *   [x] **完成第一阶段测试:** 验证环境设置，构建并成功在模拟器上运行基础 UI。
+    *   [x] **修复构建问题:** 在 `gradle.properties` 中添加 `systemProp.https.protocols=TLSv1.2` 解决 Gradle TLS 握手错误。
 
 ## 待办事项 (To-Do Items)
 
@@ -29,15 +31,15 @@
     *   在 React Native 应用中展示结果列表 (`FlatList`)。
     *   实现打开 YouTube Music 链接的功能 (`Linking`)。
 *   **第四阶段: 测试与迭代**
-    *   进行多样的 URL 测试。
+    *   进行多样的 URL 测试 (包括不同播客源)。
     *   调试和修复 Bug。
     *   优化 UI/UX。
     *   实现基本错误处理。
 
 ## 当前状态概述 (Current Status Overview)
 
-*   **第一阶段完成:** 项目基础结构、开发工作流和基础 UI 已搭建完成。代码已同步至 GitHub。
-*   **准备进入第二阶段:** 将开始开发后端 Serverless Function 用于处理核心逻辑。
+*   **第一阶段测试完成:** 项目基础结构、开发工作流和基础 UI 已搭建并成功运行。解决了初始的 Gradle 构建问题。代码已同步至 GitHub。
+*   **准备进入第二阶段:** 下一步将开始开发后端 Serverless Function 用于处理核心逻辑（网页抓取、解析和音乐提取）。
 
 ## 已知问题与挑战 (Known Issues & Challenges)
 
