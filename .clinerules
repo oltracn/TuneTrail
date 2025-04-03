@@ -1,0 +1,27 @@
+# Cline 的项目规则 (.clinerules)
+
+这个文件记录了我在与你和这个项目协作过程中学习到的关键模式、偏好和项目智能。
+
+## 关键实现路径 (Critical Implementation Paths)
+
+*   [记录完成特定任务或功能的推荐方法或关键步骤]
+
+## 用户偏好与工作流 (User Preferences & Workflow)
+
+*   [记录用户的特定编码风格、工具偏好或工作流程习惯]
+
+## 项目特定模式 (Project-Specific Patterns)
+
+*   [记录项目中反复出现的独特代码结构、命名约定或架构选择]
+
+## 已知挑战 (Known Challenges)
+
+*   [记录在项目中遇到的常见陷阱、难点或需要特别注意的地方]
+
+## 项目决策演变 (Evolution of Project Decisions)
+
+*   [记录重要技术或产品决策的背景和演变过程]
+
+## 工具使用模式 (Tool Usage Patterns)
+
+*   [记录针对此项目常用的 Cline 工具组合或特定用法]
