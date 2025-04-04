@@ -27,6 +27,7 @@
 *   **API 限制:** 需要遵守 YouTube Music API 的使用条款和配额限制。
 *   **网页抓取:** 播客 Shownotes 页面的结构可能多样且易变，网页抓取和内容解析可能需要健壮的错误处理和适应性。依赖第三方网页内容存在不确定性。
 *   **AI/解析:** 如果使用 AI 进行音乐信息提取，可能需要考虑成本、准确性和延迟。
+*   **Gradle 依赖下载:** 在某些网络环境下（尤其是国内），直接从 `mavenCentral()` 或 `google()` 下载 Gradle 依赖可能非常缓慢或失败。需要配置 HTTP/HTTPS 代理才能顺利完成构建。推荐在用户主目录的 `.gradle/gradle.properties` 文件中进行全局配置。
 
 ## 关键依赖项 (Key Dependencies)
 

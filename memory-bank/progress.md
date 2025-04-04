@@ -2,7 +2,7 @@
 
 ## 已完成功能 (Completed Features)
 
-*   **第一阶段: 基础架构、UI 搭建与开发工作流设置**
+*   **第一阶段: 基础架构、UI 搭建与开发工作流设置 (已完成)**
     *   [x] 初始化 Git 仓库并连接到 GitHub (`https://github.com/oltracn/TuneTrail`)。
     *   [x] 创建 `.gitignore` 文件。
     *   [x] 确定使用 Node.js LTS (20.x) 和 npm。
@@ -11,6 +11,10 @@
     *   [x] 实现基础 UI 骨架 (`app/App.tsx`)，包括 URL 输入框、按钮和结果占位符。
     *   [x] 使用 `useState` 进行基础状态管理。
     *   [x] 更新 `techContext.md` 和 `progress.md`。
+*   **第一阶段调试 (已完成):**
+    *   [x] 解决 Gradle Wrapper 下载超时问题 (通过修改 `gradle-wrapper.properties` 使用国内镜像，后恢复为官方地址)。
+    *   [x] 解决 Gradle 依赖下载缓慢问题 (通过在 `~/.gradle/gradle.properties` 配置全局 HTTP/HTTPS 代理)。
+    *   [x] 成功在 Android 模拟器 (macOS 环境) 上构建并运行应用 (`npm run android`)。
 
 ## 待办事项 (To-Do Items)
 
@@ -36,12 +40,12 @@
 
 ## 当前状态概述 (Current Status Overview)
 
-*   **第一阶段完成:** 项目基础结构、开发工作流和基础 UI 已搭建完成。代码已同步至 GitHub。
+*   **第一阶段及调试完成:** 项目基础结构、开发工作流、基础 UI 已搭建完成，并且已成功在 macOS 环境下的 Android 模拟器上运行。解决了 Gradle 依赖下载问题。代码准备同步至 GitHub。
 *   **准备进入第二阶段:** 将开始开发后端 Serverless Function 用于处理核心逻辑。
 
 ## 已知问题与挑战 (Known Issues & Challenges)
 
-*   *（暂无，开发尚未开始）*
+*   **已解决:** Gradle 依赖下载在特定网络环境下可能非常缓慢，需要配置代理 (全局 `~/.gradle/gradle.properties` 或项目级 `android/gradle.properties`)。
 *   **潜在挑战:**
     *   播客 Shownotes 页面结构的多样性和不稳定性可能给网页抓取带来困难。
     *   YouTube Music API 的使用限制和认证流程需要仔细处理。
