@@ -116,6 +116,47 @@ npx react-native doctor
 本项目可能在不同操作系统（如 macOS 和 Windows）之间进行开发。为确保顺利同步和构建，请注意以下几点：
 
 1.  **代码同步:**
+    *   **提交与推送:** 在切换开发设备前，务必将所有本地代码更改（包括记忆库 `memory-bank/` 目录以及任何其他修改过的文件）通过 `git add .`, `git commit -m "描述性提交信息"` 和 `git push` 推送到 GitHub 仓库。
+    *   **拉取更新:** 在新设备上开始工作前，务必运行 `git pull` 拉取远程仓库的最新代码。
+
+2.  **Gradle 代理配置 (重要):**
+    *   Gradle 在下载依赖项时可能会遇到网络问题，尤其是在访问 `mavenCentral()` 和 `google()` 等官方仓库时。这在不同网络环境下表现可能不同。
+    *   **推荐方法 (全局配置):** 在 Gradle 用户主目录 (`$HOME/.gradle/` on macOS/Linux 或 `%USERPROFILE%\.gradle\` on Windows) 下创建或编辑 `gradle.properties` 文件。添加以下配置（请根据你的实际代理服务器地址和端口修改）：
+        ```properties
+        # Gradle Proxy Settings (全局配置，推荐)
+        # --- Windows 示例路径: C:\Users\<YourUsername>\.gradle\gradle.properties ---
+        # --- macOS/Linux 示例路径: /Users/<YourUsername>/.gradle/gradle.properties ---
+        systemProp.http.proxyHost=127.0.0.1
+        systemProp.http.proxyPort=7890  # 替换为你的 HTTP 代理端口
+        systemProp.https.proxyHost=127.0.0.1
+        systemProp.https.proxyPort=7890 # 替换为你的 HTTPS 代理端口
+        # 如果代理需要认证 (可选):
+        # systemProp.http.proxyUser=your_username
+        # systemProp.http.proxyPassword=your_password
+        # systemProp.https.proxyUser=your_username
+        # systemProp.https.proxyPassword=your_password
+        ```
+    *   **确保代理开启:** 在运行需要网络访问的 Gradle 命令（如 `npm run android` 或 `./gradlew build`）之前，确保你的系统代理或 VPN 已正确配置并处于活动状态，以便 Gradle 可以通过上述配置的代理访问网络。
+    *   **一致性:** 确保在所有开发设备上都应用了相同的、有效的代理配置。
+
+3.  **环境差异:**
+    *   **路径分隔符:** 注意 Windows (`\`) 和 macOS/Linux (`/`) 之间的路径分隔符差异。尽量在脚本和配置文件中使用相对路径或环境变量来提高兼容性。
+    *   **命令行:** 不同操作系统的终端命令可能不同 (e.g., `copy` vs `cp`, `del` vs `rm`)。
+    *   **版本一致性:** 确保 Node.js, JDK, Android Studio/SDK 的版本在不同设备上保持一致（遵循本文档顶部的版本要求）。
+
+4.  **依赖与缓存清理 (故障排除):**
+    *   **Node 模块:** 切换设备后，如果遇到与 Node.js 相关的构建错误，尝试删除 `app/node_modules` 目录和 `app/package-lock.json` 文件，然后进入 `app` 目录重新运行 `npm install`。
+    *   **Gradle 缓存:** 对于 Android 构建问题，可以尝试清理 Gradle 缓存。在 `app/android` 目录下运行 `./gradlew clean` (macOS/Linux) 或 `gradlew clean` (Windows)。有时更彻底的清理可能需要删除用户主目录下的 `.gradle/caches` 文件夹。
+
+通过遵循以上步骤，可以最大限度地减少跨设备开发带来的环境配置和构建问题。
+
+---
+
+## 跨设备开发与同步注意事项
+
+本项目可能在不同操作系统（如 macOS 和 Windows）之间进行开发。为确保顺利同步和构建，请注意以下几点：
+
+1.  **代码同步:**
     *   在切换开发设备前，务必将所有本地代码更改（包括记忆库 `memory-bank/` 目录）提交 (commit) 并推送 (push) 到 GitHub 仓库。
     *   在新设备上开始工作前，务必拉取 (pull) 最新的代码。
 

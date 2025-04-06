@@ -40,3 +40,7 @@ dist/
 *.p8
 *.p12
 *.mobileprovision
+.vercel
+
+# Environment variables
+.env
