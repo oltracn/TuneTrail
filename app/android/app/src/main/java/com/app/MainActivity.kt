@@ -4,6 +4,7 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import android.os.Bundle; // Required for onCreate parameter
 
 class MainActivity : ReactActivity() {
 
@@ -19,4 +20,9 @@ class MainActivity : ReactActivity() {
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+
+  // Add this method for react-native-gesture-handler
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(null) // Use null here instead of savedInstanceState to avoid issues with states restoration
+  }
 }

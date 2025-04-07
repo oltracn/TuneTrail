@@ -37,20 +37,35 @@
 
 ## 已完成功能 (Completed Features)
 *   ... (保持第一、二、三阶段不变) ...
-*   **第四阶段 (部分): 测试与后端优化 (已完成)**
+*   **第四阶段 (部分): 测试、优化与重构 (已完成)**
     *   [x] 使用多样化的 URL 对后端 API 进行了测试。
     *   [x] 识别并改进了对 403 Forbidden 错误的后端处理。
     *   [x] 优化了 YouTube API 调用逻辑，改为分批并行处理。
-    *   [x] 验证了优化后的后端 API 功能。
+    *   [x] 集成了 Spotify API 搜索功能 (Client Credentials Flow)。
+    *   [x] 后端 API 支持基于 `platform` 参数的条件搜索。
     *   [x] 为 Git 配置了代理。
+    *   [x] 安装了 React Navigation 及依赖。
+    *   [x] 创建了 `HomeScreen`, `AddUrlScreen`, `SettingsScreen`。
+    *   [x] 设置了 Stack Navigator (`App.tsx`)。
+    *   [x] 创建了 `SearchContext` 用于状态共享。
+    *   [x] 更新了屏幕组件以使用 Context。
+    *   [x] 添加了基本导航功能。
+    *   [x] 修复了 `react-native-gesture-handler` 和 `hoist-non-react-statics` 相关错误。
+    *   [x] 完成了重构后的初步测试。
 
 ## 待办事项 (To-Do Items)
 
 *   **第四阶段 (剩余): 迭代与新功能**
+    *   **问题排查与修复:**
+        *   [ ] 解决初步测试中发现的剩余问题 (待明确)。
     *   **阶段 4.2: 实现分享接收功能**
-        *   [ ] 修改 `AndroidManifest.xml` 以接收分享意图。
-        *   [ ] 在 `app/App.tsx` 中处理传入的分享 URL。
-    *   **阶段 4.3: 实现 Google 登录与收藏**
+        *   [x] 修改 `AndroidManifest.xml` 以接收分享意图。
+        *   [ ] 在 `AddUrlScreen.tsx` 中完善处理传入分享 URL 的逻辑 (当前仅 `console.log`)。
+    *   **阶段 4.3: 平台选择 UI**
+        *   [ ] 在 `SettingsScreen.tsx` 中添加平台选择 UI (例如 Switches)。
+        *   [ ] 将平台选择状态存储起来 (例如使用 `AsyncStorage` 或 Context)。
+        *   [ ] 在 `AddUrlScreen.tsx` 中读取平台选择状态并传递给 API。
+    *   **阶段 4.4: 实现 Google 登录与收藏**
         *   [ ] 配置 Google Cloud OAuth 凭据。
         *   [ ] 集成 Google 登录库。
         *   [ ] 实现登录/登出及用户状态管理。
@@ -63,8 +78,8 @@
 ## 当前状态概述 (Current Status Overview)
 
 *   **核心功能 MVP 完成:** 项目的基础架构、后端 API 和前端应用的核心流程已实现并通过本地测试。
-*   **阶段 4.1 完成:** 完成了对 MVP 的初步测试和后端 YouTube API 调用优化。
-*   **准备进入阶段 4.2:** 将开始实现从其他 App 分享 URL 到 TuneTrail 的功能。
+*   **多页面重构与 Context 集成完成:** 应用已重构为多页面结构，并使用 Context API 管理搜索状态。初步测试通过。
+*   **准备进行问题修复与后续功能开发:** 需要先解决测试中发现的问题，然后继续开发分享接收、平台选择 UI 等功能。
 
 ## 已知问题与挑战 (Known Issues & Challenges)
 

@@ -2,33 +2,37 @@
 
 ## 当前焦点 (Current Focus)
 
-*   **阶段 4.1 完成，准备阶段 4.2:** MVP 核心测试和后端 YouTube API 调用优化已完成。准备开始实现分享接收功能。
+*   **多页面重构初步完成与测试:** 应用已重构为多页面结构 (Home, AddUrl, Settings)，引入了 React Navigation 和 Context API 进行导航和状态管理。初步测试通过，但存在一些待解决的问题。
 
 ## 最近的变更 (Recent Changes)
 
-*   **调试成功 (macOS):** 解决了 Gradle 依赖下载问题并成功运行 Android 应用。
-*   **记忆库审查与更新:** 完成了记忆库审查，更新了 `.clinerules` 和 `SETUP.md` 确认。
-*   **代码同步 (macOS -> Windows):** 完成了跨设备开发准备和代码同步。
-*   **后端 API 实现与测试:**
-    *   完成了 `api/process-url.js` Serverless Function 的开发。
-    *   使用 `vercel dev` 和 `curl` 成功进行了本地测试。
-*   **前端 API 集成与测试:**
-    *   确认 `app/App.tsx` 已包含调用后端 API 的逻辑。
-    *   使用 `npm run android` 在模拟器上成功运行应用。
-    *   成功完成了从输入 URL 到在应用内展示 YouTube Music 链接的端到端测试。
-*   **阶段 4.1 - MVP 测试与后端优化:**
-    *   使用多个不同来源的 URL 对后端 API 进行了测试，识别并处理了 403 错误。
-    *   优化了 `api/process-url.js` 中的 YouTube API 调用逻辑，改为分批并行处理以提高效率。
-    *   通过测试验证了优化后的代码能正确处理并返回结果。
-    *   为 Git 配置了代理以解决推送问题。
+*   **后端 API 优化与 Spotify 集成:**
+    *   优化了 YouTube API 调用为分批并行。
+    *   集成了 Spotify API 搜索功能 (Client Credentials Flow)。
+    *   后端 API 现在能根据 `platform` 参数进行条件搜索。
+    *   更新了 `.clinerules` 关于 `replace_in_file` 的使用策略。
+*   **前端重构:**
+    *   安装了 React Navigation 及相关依赖。
+    *   创建了 `HomeScreen`, `AddUrlScreen`, `SettingsScreen` 组件。
+    *   设置了 Stack Navigator (`App.tsx`)。
+    *   创建了 `SearchContext` 用于共享 `isLoading` 和 `results` 状态。
+    *   修改了 `HomeScreen` 和 `AddUrlScreen` 以使用 Context。
+    *   添加了基本的导航按钮 (FAB 和 Header Button)。
+*   **问题修复:**
+    *   解决了 `react-native-gesture-handler` 缺失导致的红屏错误 (安装依赖、修改 `MainActivity.kt`)。
+    *   通过清理依赖和重启 Metro 解决了 `hoist-non-react-statics` 相关的红屏错误。
+*   **初步测试:** 重构后的应用已能在模拟器上运行，导航和核心搜索流程初步通过测试。
 
 ## 下一步计划 (Next Steps)
 
-*   **更新记忆库:** 更新 `progress.md` 反映阶段 4.1 完成 (正在进行)。
-*   **代码同步:** 将后端优化代码和记忆库更新提交到 GitHub (即将进行)。
-*   **阶段 4.2 - 实现分享接收功能:**
-    *   修改 `AndroidManifest.xml` 以接收分享意图。
-    *   在 `app/App.tsx` 中处理传入的分享 URL。
+*   **更新记忆库:** 更新 `progress.md` 反映重构和初步测试完成 (正在进行)。
+*   **代码同步:** 将所有重构代码和记忆库更新提交到 GitHub (即将进行)。
+*   **问题排查与修复:** 解决初步测试中发现的剩余问题 (具体问题待用户指出)。
+*   **继续开发:**
+    *   实现 `SettingsScreen` 中的平台选择 UI 和逻辑。
+    *   将平台选择状态集成到 `AddUrlScreen` 的 API 调用中。
+    *   实现分享接收功能 (`AndroidManifest.xml` 修改已完成，需在 `AddUrlScreen` 中完善逻辑)。
+    *   (后续) 实现 Google 登录与收藏功能。
 
 ## 当前决策与考虑 (Active Decisions & Considerations)
 
