@@ -248,56 +248,81 @@ JSON Array Output:`; // Limit input text size if necessary
     }
 
     const searchResults = [];
-    // 改为使用 for...of 循环顺序处理搜索请求，以减少并发问题
-    for (const mention of potentialMusicMentions) {
-      const searchQuery = mention; // 直接使用提取的字符串作为搜索查询
-      const youtubeApiUrl = 'https://www.googleapis.com/youtube/v3/search';
+    const youtubeApiUrl = 'https://www.googleapis.com/youtube/v3/search';
+    const batchSize = 5; // 一次并行处理 5 个请求
 
-      try {
-        const youtubeResponse = await axios.get(youtubeApiUrl, {
-          params: {
-            part: 'snippet',
-            q: searchQuery,
-            type: 'video',
-            videoCategoryId: '10', // Music category ID
-            maxResults: 1,         // 只获取最相关的结果
-            key: apiKey,
-          },
-          timeout: 8000, // YouTube API 请求超时增加到 8 秒
-        });
+    for (let i = 0; i < potentialMusicMentions.length; i += batchSize) {
+      const batch = potentialMusicMentions.slice(i, i + batchSize);
+      console.log(`Processing YouTube search batch: ${i / batchSize + 1} (size: ${batch.length})`);
 
-        if (youtubeResponse.data.items && youtubeResponse.data.items.length > 0) {
-          const firstResult = youtubeResponse.data.items[0];
-          const videoId = firstResult.id.videoId;
-          const videoTitle = firstResult.snippet.title;
-          const youtubeMusicLink = `https://music.youtube.com/watch?v=${videoId}`;
-          searchResults.push({
-            mention: mention,
-            youtubeTitle: videoTitle,
-            youtubeMusicLink: youtubeMusicLink,
+      // Create promises for the current batch
+      const promises = batch.map(async (mention) => {
+        const searchQuery = mention;
+        try {
+          const youtubeResponse = await axios.get(youtubeApiUrl, {
+            params: {
+              part: 'snippet',
+              q: searchQuery,
+              type: 'video',
+              videoCategoryId: '10', // Music category ID
+              maxResults: 1,         // 只获取最相关的结果
+              key: apiKey,
+            },
+            timeout: 8000, // YouTube API 请求超时增加到 8 秒
           });
-        } else {
-          searchResults.push({
+
+          if (youtubeResponse.data.items && youtubeResponse.data.items.length > 0) {
+            const firstResult = youtubeResponse.data.items[0];
+            const videoId = firstResult.id.videoId;
+            const videoTitle = firstResult.snippet.title;
+            const youtubeMusicLink = `https://music.youtube.com/watch?v=${videoId}`;
+            return { // Return success result object
+              mention: mention,
+              youtubeTitle: videoTitle,
+              youtubeMusicLink: youtubeMusicLink,
+            };
+          } else {
+            return { // Return not found result object
+              mention: mention,
+              youtubeTitle: 'Not Found',
+              youtubeMusicLink: null,
+            };
+          }
+        } catch (youtubeError) {
+          console.error(`Error searching YouTube for "${searchQuery}":`, youtubeError.message);
+          return { // Return error result object
             mention: mention,
-            youtubeTitle: 'Not Found',
+            youtubeTitle: 'Search Error',
             youtubeMusicLink: null,
-          });
+            errorDetails: youtubeError.message,
+          };
         }
-      } catch (youtubeError) {
-        console.error(`Error searching YouTube for "${searchQuery}":`, youtubeError.message);
-        searchResults.push({
-          mention: mention,
-          youtubeTitle: 'Search Error',
-          youtubeMusicLink: null,
-          errorDetails: youtubeError.message, // 可选：包含错误详情
-        });
+      }); // End map
+
+      // Wait for all promises in the batch to settle
+      const batchResults = await Promise.allSettled(promises);
+
+      // Process the results of the settled promises
+      batchResults.forEach(result => {
+        if (result.status === 'fulfilled') {
+          searchResults.push(result.value); // Add the result object (success, not found, or error)
+        } else {
+          // This case should ideally not happen often as errors are caught inside the promise
+          console.error('A YouTube search promise was unexpectedly rejected:', result.reason);
+          // Maybe push a generic error object if needed? For now, just log.
+        }
+      });
+
+      // Optional delay between batches
+      if (i + batchSize < potentialMusicMentions.length) {
+        await new Promise(resolve => setTimeout(resolve, 200)); // Pause 200ms
       }
-    } // 结束 for...of 循环
+    } // End for loop
 
     // 5. 返回最终结果
     res.status(200).json({
       title: title,
-      results: searchResults, // 返回包含 YouTube 链接的结果
+      results: searchResults,
     });
 
   } catch (error) {
@@ -312,6 +337,12 @@ JSON Array Output:`; // Limit input text size if necessary
     } else if (error.code === 'ECONNABORTED') {
         errorMessage = 'Error fetching URL: Request timed out.';
     }
-    res.status(500).json({ error: errorMessage, details: error.message });
+    // Specific handling for 403 Forbidden
+    if (axios.isAxiosError(error) && error.response && error.response.status === 403) {
+      errorMessage = '无法访问目标 URL (403 Forbidden)，可能目标网站限制了访问。';
+      res.status(403).json({ error: errorMessage, details: 'Access denied by target server.' });
+    } else {
+      res.status(500).json({ error: errorMessage, details: error.message });
+    }
   }
 };
