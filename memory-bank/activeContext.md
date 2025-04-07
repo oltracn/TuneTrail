@@ -2,21 +2,26 @@
 
 ## 当前焦点 (Current Focus)
 
-*   **跨设备同步准备:** 更新文档并同步代码到 GitHub，为在 Windows PC 上继续开发做准备。
+*   **前端 API 集成:** 在 React Native 应用 (`app/App.tsx`) 中实现调用后端 `/api/process-url` 端点的逻辑。
 
 ## 最近的变更 (Recent Changes)
 
-*   **调试成功:** 在 macOS 环境下解决了 Gradle 依赖下载问题（通过配置全局代理），并成功构建和运行了 Android 应用。
-*   **记忆库更新:** 更新了 `progress.md` 反映调试进展。
-*   **Shell 配置:** 将代理设置和 `proxyon`/`proxyoff` 函数从 `.zshrc` 添加到了 `.bash_profile`。
-*   **记忆库审查:** 完成了所有核心记忆库文件的审查。
+*   **调试成功 (macOS):** 解决了 Gradle 依赖下载问题并成功运行 Android 应用。
+*   **记忆库审查与更新:** 完成了记忆库审查，更新了 `.clinerules` 和 `SETUP.md` 确认。
+*   **代码同步 (macOS -> Windows):** 完成了跨设备开发准备和代码同步。
+*   **后端 API 实现与测试:**
+    *   完成了 `api/process-url.js` Serverless Function 的开发，实现了 URL 抓取、Cheerio 解析、Gemini 音乐提取和 YouTube API 搜索的完整流程。
+    *   使用 `vercel dev` 和 `curl` 成功进行了本地测试，验证了 API 功能。
 
 ## 下一步计划 (Next Steps)
 
-*   **更新 SETUP.md:** 添加关于跨设备开发同步和 Windows 环境配置（特别是代理）的说明 (即将进行)。
-*   **代码同步:** 将所有本地更改（包括记忆库更新）提交并推送到 GitHub 仓库 (即将进行)。
-*   **PC 环境准备:** 用户将在 PC (Windows) 环境下继续开发，需要确保 PC 端的开发环境（Node.js, JDK, Android Studio, SDK, 代理设置等）配置正确。
-*   **进入第二阶段:** 在 PC 环境下开始开发后端 Serverless Function。
+*   **更新记忆库:** 更新 `progress.md` 反映后端 API 完成情况 (正在进行)。
+*   **代码同步:** 将后端 API 代码和记忆库更新提交到 GitHub (即将进行)。
+*   **前端开发 (`app/App.tsx`):**
+    *   添加状态变量来存储 API 返回的结果和加载状态。
+    *   修改按钮的 `onPress` 处理函数，使其调用 `/api/process-url`。
+    *   处理 API 请求的加载、成功和错误状态。
+    *   (后续) 在 UI 中展示 API 返回的音乐结果列表。
 
 ## 当前决策与考虑 (Active Decisions & Considerations)
 
