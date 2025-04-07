@@ -28,30 +28,26 @@
     *   [x] 处理 API 结果并返回给客户端。
     *   [x] 使用 `vercel dev` 和 `curl` 成功完成本地测试。
 
+*   **第三阶段: 前端集成与结果展示 (已完成)**
+    *   [x] 在 React Native 应用 (`app/App.tsx`) 中实现调用 `/api/process-url` 的 API 请求逻辑。
+    *   [x] 添加加载状态 (`ActivityIndicator`) 和错误处理 (`Alert`) UI 反馈。
+    *   [x] 在 React Native 应用中展示结果列表 (`FlatList`)。
+    *   [x] 实现打开 YouTube Music 链接的功能 (`Linking`)。
+    *   [x] 成功完成端到端测试 (模拟器 -> 本地 API -> 结果展示)。
+
 ## 待办事项 (To-Do Items)
 
-*   **第三阶段: 前端集成与结果展示**
-    *   [ ] 在 React Native 应用 (`app/App.tsx`) 中实现调用 `/api/process-url` 的 API 请求逻辑。
-    *   [ ] 添加加载状态和错误处理 UI 反馈。
-    *   [ ] 在 React Native 应用中展示结果列表 (`FlatList` 或类似组件)。
-    *   [ ] 实现打开 YouTube Music 链接的功能 (`Linking`)。
 *   **第四阶段: 测试与迭代**
-    *   [ ] 进行多样的 URL 测试 (包括不同播客源)。
-    *   [ ] 调试和修复 Bug。
-    *   [ ] 优化 UI/UX。
-    *   [ ] 实现更完善的错误处理。
-*   **第四阶段: 测试与迭代**
-    *   进行多样的 URL 测试 (包括不同播客源)。
-    *   调试和修复 Bug。
-    *   优化 UI/UX。
-    *   实现基本错误处理。
+    *   [ ] 进行多样的 URL 测试 (包括不同播客源、不同页面结构)。
+    *   [ ] 根据测试结果进行调试和优化 (例如，改进 Gemini prompt、处理 YouTube API 未找到结果的情况、增强错误处理)。
+    *   [ ] 考虑 UI/UX 改进（例如，更清晰的错误提示、空状态优化、结果排序等）。
+    *   [ ] (可选) 部署后端 API 到 Vercel 生产环境。
+    *   [ ] (可选) 更新前端 API 端点以指向生产环境 URL。
 
 ## 当前状态概述 (Current Status Overview)
 
-*   **第一阶段及调试完成:** 项目基础结构、开发工作流、基础 UI 已搭建完成，并且已成功在 macOS 环境下的 Android 模拟器上运行。解决了 Gradle 依赖下载问题。
-*   **跨设备准备完成:** 确认了 `SETUP.md` 包含 Windows 配置说明，更新了 `.clinerules`，并将所有代码（包括记忆库）同步到了 GitHub。
-*   **第二阶段后端 API 完成:** 成功开发并本地测试了 `api/process-url.js` Serverless Function，实现了 URL 处理、音乐提取 (Gemini) 和 YouTube 搜索的核心逻辑。
-*   **准备进入第三阶段 (前端集成):** 将开始在 React Native 应用 (`app/App.tsx`) 中集成对后端 API 的调用并展示结果。
+*   **核心功能 MVP 完成:** 项目的基础架构、后端 API (URL 处理、音乐提取、YouTube 搜索) 以及前端应用 (UI、API 调用、结果展示、链接跳转) 的核心流程已全部实现并成功通过本地端到端测试。
+*   **准备进入第四阶段 (测试与迭代):** 需要进行更广泛的测试，并根据结果进行优化和改进。
 
 ## 已知问题与挑战 (Known Issues & Challenges)
 

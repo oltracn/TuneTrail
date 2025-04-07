@@ -2,7 +2,7 @@
 
 ## 当前焦点 (Current Focus)
 
-*   **前端 API 集成:** 在 React Native 应用 (`app/App.tsx`) 中实现调用后端 `/api/process-url` 端点的逻辑。
+*   **核心功能完成与后续迭代:** 核心的 URL 处理、音乐提取和展示流程已完成并测试成功。准备进行后续的测试、优化和可能的 UI 改进。
 
 ## 最近的变更 (Recent Changes)
 
@@ -10,18 +10,21 @@
 *   **记忆库审查与更新:** 完成了记忆库审查，更新了 `.clinerules` 和 `SETUP.md` 确认。
 *   **代码同步 (macOS -> Windows):** 完成了跨设备开发准备和代码同步。
 *   **后端 API 实现与测试:**
-    *   完成了 `api/process-url.js` Serverless Function 的开发，实现了 URL 抓取、Cheerio 解析、Gemini 音乐提取和 YouTube API 搜索的完整流程。
-    *   使用 `vercel dev` 和 `curl` 成功进行了本地测试，验证了 API 功能。
+    *   完成了 `api/process-url.js` Serverless Function 的开发。
+    *   使用 `vercel dev` 和 `curl` 成功进行了本地测试。
+*   **前端 API 集成与测试:**
+    *   确认 `app/App.tsx` 已包含调用后端 API 的逻辑。
+    *   使用 `npm run android` 在模拟器上成功运行应用。
+    *   成功完成了从输入 URL 到在应用内展示 YouTube Music 链接的端到端测试。
 
 ## 下一步计划 (Next Steps)
 
-*   **更新记忆库:** 更新 `progress.md` 反映后端 API 完成情况 (正在进行)。
-*   **代码同步:** 将后端 API 代码和记忆库更新提交到 GitHub (即将进行)。
-*   **前端开发 (`app/App.tsx`):**
-    *   添加状态变量来存储 API 返回的结果和加载状态。
-    *   修改按钮的 `onPress` 处理函数，使其调用 `/api/process-url`。
-    *   处理 API 请求的加载、成功和错误状态。
-    *   (后续) 在 UI 中展示 API 返回的音乐结果列表。
+*   **更新记忆库:** 更新 `progress.md` 反映前端集成测试完成 (正在进行)。
+*   **代码同步:** 将记忆库更新提交到 GitHub (即将进行)。
+*   **第四阶段 - 测试与迭代:**
+    *   使用更多不同的播客 Shownotes URL 进行测试。
+    *   根据测试结果进行调试和优化 (例如，改进 Gemini prompt 或错误处理)。
+    *   考虑 UI/UX 改进（例如，更清晰的错误提示，更好的加载状态反馈等）。
 
 ## 当前决策与考虑 (Active Decisions & Considerations)
 
