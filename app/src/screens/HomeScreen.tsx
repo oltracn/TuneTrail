@@ -61,7 +61,11 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenProps['navigation'] 
   };
 
   // Render item for FlatList - Uses context results
-  const renderResultItem = ({ item }: { item: ResultItem }) => (
+  const renderResultItem = ({ item }: { item: ResultItem }) => {
+    // --- DEBUGGING ---
+    console.log('Rendering item:', JSON.stringify(item, null, 2));
+    // --- END DEBUGGING ---
+    return (
     <View
       style={[
         styles.resultItem,
@@ -72,7 +76,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenProps['navigation'] 
       ]}
     >
       <Text style={[styles.mentionText, { color: isDarkMode ? '#DDD' : '#333' }]}>
-        {item.mention}
+        {String(item.mention)}
       </Text>
       {/* YouTube Result */}
       {item.youtubeMusicLink || item.youtubeTitle !== 'Not Found' ? (
@@ -86,7 +90,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenProps['navigation'] 
                 numberOfLines={1}
                 ellipsizeMode="tail"
             >
-                YT: {item.youtubeTitle === 'Search Error' ? `搜索错误: ${item.errorDetails || '未知'}` : item.youtubeTitle}
+                YT: {item.youtubeTitle === 'Search Error' ? `搜索错误: ${String(item.errorDetails || '未知')}` : String(item.youtubeTitle)}
             </Text>
          </TouchableOpacity>
       ) : null}
@@ -102,7 +106,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenProps['navigation'] 
                 numberOfLines={1}
                 ellipsizeMode="tail"
             >
-                SP: {item.spotifyTitle === 'Search Error' ? `搜索错误: ${item.errorDetails || '未知'}` : `${item.spotifyArtist ? item.spotifyArtist + ' - ' : ''}${item.spotifyTitle}`}
+                SP: {item.spotifyTitle === 'Search Error' ? `搜索错误: ${String(item.errorDetails || '未知')}` : `${String(item.spotifyArtist || '') ? String(item.spotifyArtist) + ' - ' : ''}${String(item.spotifyTitle)}`}
             </Text>
          </TouchableOpacity>
        ) : null}
@@ -113,7 +117,8 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenProps['navigation'] 
            </Text>
        )}
     </View>
-  );
+  ); // Closing parenthesis of return
+}; // Added closing brace and semicolon for the function
 
   return (
     <SafeAreaView style={backgroundStyle}>

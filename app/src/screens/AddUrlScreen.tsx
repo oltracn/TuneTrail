@@ -14,6 +14,20 @@ import {
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'; // Import navigation types
 import type { RootStackParamList } from '../../App'; // Import stack param list type
 import { useSearch } from '../context/SearchContext'; // Import the context hook
+import { Text } from 'react-native';
+import { useSearch } from '../contexts/SearchContext';
+
+const AddUrlScreen = () => {
+  const { error } = useSearch();
+  
+  return (
+    <View>
+      {/* 确保错误信息使用 Text 组件包裹 */}
+      {error && <Text style={{ color: 'red' }}>{error}</Text>}
+      {/* 其他组件 */}
+    </View>
+  );
+};
 
 // Define navigation props type for this screen
 type AddUrlScreenProps = NativeStackScreenProps<RootStackParamList, 'AddUrl'>;
