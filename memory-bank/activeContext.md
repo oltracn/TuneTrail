@@ -21,6 +21,8 @@
 *   **问题修复:**
     *   解决了 `react-native-gesture-handler` 缺失导致的红屏错误 (安装依赖、修改 `MainActivity.kt`)。
     *   通过清理依赖和重启 Metro 解决了 `hoist-non-react-statics` 相关的红屏错误。
+*   **文档更新:**
+    *   在 `SETUP.md` 中添加了关于部署 `api/` 服务到 Vercel 的详细说明。
 *   **初步测试:** 重构后的应用已能在模拟器上运行，导航和核心搜索流程初步通过测试。
 
 ## 下一步计划 (Next Steps)

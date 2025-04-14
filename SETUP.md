@@ -147,3 +147,61 @@ npx react-native doctor
 4.  **依赖与缓存清理 (故障排除):**
     *   **Node 模块:** 切换设备后，如果遇到与 Node.js 相关的构建错误，尝试删除 `app/node_modules` 目录和 `app/package-lock.json` 文件，然后进入 `app` 目录重新运行 `npm install`。
     *   **Gradle 缓存:** 对于 Android 构建问题，可以尝试清理 Gradle 缓存。在 `app/android` 目录下运行 `./gradlew clean` (macOS/Linux) 或 `gradlew clean` (Windows)。有时更彻底的清理可能需要删除用户主目录下的 `.gradle/caches` 文件夹。
+
+---
+
+## Vercel 部署 (API 服务)
+
+本节介绍如何将 `api/` 目录下的 Node.js 后端服务部署到 Vercel。
+
+### 1. 安装 Vercel CLI
+
+*   **全局安装:** 如果你还没有安装 Vercel CLI，可以通过 npm 全局安装：
+    ```bash
+    npm install -g vercel
+    ```
+
+### 2. 登录 Vercel
+
+*   在终端运行以下命令并按照提示登录你的 Vercel 账户：
+    ```bash
+    vercel login
+    ```
+
+### 3. 部署 API 服务
+
+*   **进入 API 目录:** 确保你的终端当前位于项目的 `api/` 目录下。
+    ```bash
+    cd api 
+    ```
+*   **执行部署命令:** 运行 `vercel` 命令开始部署。
+    ```bash
+    vercel
+    ```
+*   **配置项目:**
+    *   Vercel CLI 会引导你完成配置过程。
+    *   **Scope:** 选择你的 Vercel 账户或团队。
+    *   **Link to existing project?** 如果是首次部署，选择 `N` (No)。
+    *   **Project name:** Vercel 会建议一个项目名称 (例如 `api`)，你可以接受或修改。
+    *   **Directory:** Vercel 会检测到当前目录 (`api/`)，确认即可 (按 Enter)。
+    *   **Auto-detected settings:** Vercel 通常能自动检测到 Node.js 项目。它可能会询问框架预设，对于简单的 Node.js 服务，选择 `Other` 或直接确认自动检测结果。
+    *   **Build command:** 如果你的 API 服务需要构建步骤 (例如 TypeScript 编译)，在此处输入命令。对于 `api/process-url.js` 这个简单的 JS 文件，可能不需要构建命令，可以直接留空或按 Enter。
+    *   **Output directory:** 如果有构建步骤产生输出目录，在此指定。否则留空。
+    *   **Install command:** Vercel 会自动使用 `npm install` (或 `yarn install` 等，基于你的 `package-lock.json` 或 `yarn.lock`)。通常确认即可。
+    *   **Development command:** 用于本地开发，部署时不需要。
+*   **确认部署:** Vercel 会显示部署预览链接。确认无误后，可以选择部署到生产环境 (`vercel --prod`)。
+
+### 4. 配置环境变量 (如果需要)
+
+*   如果你的 API 服务需要环境变量 (例如 API 密钥)，可以在 Vercel 项目的设置界面中添加。
+*   或者，使用 Vercel CLI 添加：
+    ```bash
+    vercel env add <VARIABLE_NAME> <VALUE> [environment] 
+    # 例如: vercel env add MY_API_KEY abc123xyz production
+    ```
+
+### 5. 后续部署
+
+*   之后，只需要在 `api/` 目录下运行 `vercel` (预览部署) 或 `vercel --prod` (生产部署) 即可更新。
+
+*注意: 部署完成后，Vercel 会提供一个 URL，你的 React Native 应用需要配置此 URL 来访问后端 API。*

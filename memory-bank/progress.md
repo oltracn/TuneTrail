@@ -53,6 +53,7 @@
     *   [x] 修复了 `react-native-gesture-handler` 和 `hoist-non-react-statics` 相关错误。
     *   [x] 完成了重构后的初步测试。
     *   [x] 将重构代码和记忆库更新同步到 GitHub。
+    *   [x] 在 `SETUP.md` 中添加了 Vercel 部署 API 服务的说明。
 
 ## 待办事项 (To-Do Items)
 
