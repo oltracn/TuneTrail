@@ -2,37 +2,48 @@
 
 ## 当前焦点 (Current Focus)
 
-*   **多页面重构初步完成与测试:** 应用已重构为多页面结构 (Home, AddUrl, Settings)，引入了 React Navigation 和 Context API 进行导航和状态管理。初步测试通过，但存在一些待解决的问题。
+*   **开发环境设置完成:** 已根据 `SETUP.md` 完成 Android 开发环境的核心配置，并通过 `react-native doctor` 验证。系统已准备好进行应用构建和运行。
 
 ## 最近的变更 (Recent Changes)
 
-*   **后端 API 优化与 Spotify 集成:**
-    *   优化了 YouTube API 调用为分批并行。
-    *   集成了 Spotify API 搜索功能 (Client Credentials Flow)。
-    *   后端 API 现在能根据 `platform` 参数进行条件搜索。
-    *   更新了 `.clinerules` 关于 `replace_in_file` 的使用策略。
-*   **前端重构:**
-    *   安装了 React Navigation 及相关依赖。
-    *   创建了 `HomeScreen`, `AddUrlScreen`, `SettingsScreen` 组件。
-    *   设置了 Stack Navigator (`App.tsx`)。
-    *   创建了 `SearchContext` 用于共享 `isLoading` 和 `results` 状态。
-    *   修改了 `HomeScreen` 和 `AddUrlScreen` 以使用 Context。
-    *   添加了基本的导航按钮 (FAB 和 Header Button)。
+*   **产品方向调整 (Spotify-Only):**
+    *   根据用户反馈，决定移除 YouTube Music 搜索，仅保留 Spotify 搜索。
+*   **后端 API 修改 (`api/process-url.js`):**
+    *   移除了 YouTube Music API 调用逻辑和 `platform` 参数处理。
+    *   API 现在固定使用 Spotify API 进行搜索。
+    *   更新了 Spotify 凭证检查逻辑。
+*   **前端修改 (`app/src/`):**
+    *   移除了 `SettingsScreen.tsx` 中关于平台选择的 TODO 注释。
+    *   修改了 `AddUrlScreen.tsx`，不再向后端传递 `platform` 参数。
+    *   在 `App.tsx` 中定义并导出了 `RootStackParamList` 类型。
+    *   在 `SearchContext.tsx` 中添加了 `clearResults` 函数及其类型定义。
 *   **问题修复:**
-    *   解决了 `react-native-gesture-handler` 缺失导致的红屏错误 (安装依赖、修改 `MainActivity.kt`)。
-    *   通过清理依赖和重启 Metro 解决了 `hoist-non-react-statics` 相关的红屏错误。
+    *   修复了 `AddUrlScreen.tsx` 中的重复导入和声明错误。
+    *   修复了 `AddUrlScreen.tsx` 中 `useSearch` 解构 `clearResults` 的类型错误。
+    *   (潜在问题) 修复了 `App.tsx` 中 `RootStackParamList` 未导出的问题。
+    *   (待观察) `App.tsx` 中关于 `@react-navigation/stack` 找不到模块的错误，可能是环境问题，依赖已确认存在。
 *   **文档更新:**
+    *   更新了 `memory-bank/productContext.md` 以反映 Spotify-Only 的产品方向。
     *   在 `SETUP.md` 中添加了关于部署 `api/` 服务到 Vercel 的详细说明。
-*   **初步测试:** 重构后的应用已能在模拟器上运行，导航和核心搜索流程初步通过测试。
+*   **开发环境设置:** (保持不变)
+    *   安装了 `app/` 和 `api/` 目录的 npm 依赖。
+    *   根据用户反馈，指导并确认完成了 JDK 17、Android SDK 组件的安装和 `ANDROID_HOME` 及 `PATH` 环境变量的配置。
+    *   运行 `npx react-native doctor` 确认核心 Android 环境配置成功。
+*   **规则更新 (`.clinerules`):**
+    *   添加规则：执行命令时优先使用绝对路径进行 `cd`。
+    *   添加规则：任务完成后必须更新记忆库 (`activeContext.md`, `progress.md`)。
+*   **初步测试:** (保持不变) 重构后的应用已能在模拟器上运行，导航和核心搜索流程初步通过测试。
 
 ## 下一步计划 (Next Steps)
 
-*   **更新记忆库:** 更新 `progress.md` 反映重构和初步测试完成 (正在进行)。
-*   **代码同步:** 将所有重构代码和记忆库更新提交到 GitHub (已完成)。
-*   **问题排查与修复:** 解决初步测试中发现的剩余问题 (具体问题待用户指出)。
-*   **继续开发:**
-    *   实现 `SettingsScreen` 中的平台选择 UI 和逻辑。
-    *   将平台选择状态集成到 `AddUrlScreen` 的 API 调用中。
+*   **环境就绪:** 开发环境已准备就绪，可以开始运行应用或继续开发。
+*   **更新记忆库:** 更新 `progress.md` 反映环境设置完成 (正在进行)。
+*   **代码同步:** 将记忆库和 `.clinerules` 的更新提交到 GitHub。
+*   **继续开发 (调整后):**
+    *   (可选) 启动应用进行测试 (`npm start` & `npm run android` in `app/`)，验证 Spotify 搜索流程。
+    *   解决初步测试中发现的剩余问题 (具体问题待用户指出)。
+    *   **移除:** ~~实现 `SettingsScreen` 中的平台选择 UI 和逻辑。~~
+    *   **移除:** ~~将平台选择状态集成到 `AddUrlScreen` 的 API 调用中。~~
     *   实现分享接收功能 (`AndroidManifest.xml` 修改已完成，需在 `AddUrlScreen` 中完善逻辑)。
     *   (后续) 实现 Google 登录与收藏功能。
 

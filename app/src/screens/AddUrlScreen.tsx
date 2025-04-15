@@ -12,31 +12,33 @@ import {
   Linking, // Import Linking
 } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'; // Import navigation types
-import type { RootStackParamList } from '../../App'; // Import stack param list type
-import { useSearch } from '../context/SearchContext'; // Import the context hook
-import { Text } from 'react-native';
-import { useSearch } from '../contexts/SearchContext';
+import type { RootStackParamList } from '../../App'; // Import stack param list type - Assuming export exists in App.tsx
+// import { useSearch } from '../context/SearchContext'; // Removed duplicate import
+// import { Text } from 'react-native'; // Removed duplicate import
+import { useSearch } from '../contexts/SearchContext'; // Keep this one (assuming path is correct)
 
-const AddUrlScreen = () => {
-  const { error } = useSearch();
-  
-  return (
-    <View>
-      {/* 确保错误信息使用 Text 组件包裹 */}
-      {error && <Text style={{ color: 'red' }}>{error}</Text>}
-      {/* 其他组件 */}
-    </View>
-  );
-};
+// Removed the first, simpler AddUrlScreen declaration as it was causing redeclaration errors
+// const AddUrlScreen = () => {
+//   const { error } = useSearch(); // Error property likely doesn't exist on context
+//
+//   return (
+//     <View>
+//       {/* 确保错误信息使用 Text 组件包裹 */}
+//       {error && <Text style={{ color: 'red' }}>{error}</Text>}
+//       {/* 其他组件 */}
+//     </View>
+//   );
+// };
 
 // Define navigation props type for this screen
 type AddUrlScreenProps = NativeStackScreenProps<RootStackParamList, 'AddUrl'>;
 
-// Remove explicit type annotation from function signature
+// Keep the main component declaration
 const AddUrlScreen = ({ navigation }: { navigation: AddUrlScreenProps['navigation'] }) => { // Access navigation prop directly
   const isDarkMode = useColorScheme() === 'dark';
   const [url, setUrl] = useState('');
   const [initialUrlChecked, setInitialUrlChecked] = useState(false); // Track initial URL check
+  // Removed 'error' from destructuring as it likely doesn't exist on the context type
   const { setIsLoading, setResults, clearResults } = useSearch(); // Get functions from context
 
   // Use 10.0.2.2 for Android Emulator to connect to host's localhost
@@ -85,15 +87,15 @@ const AddUrlScreen = ({ navigation }: { navigation: AddUrlScreenProps['navigatio
     console.log(`查找音乐 URL: ${url}`);
     console.log(`调用 API: ${API_ENDPOINT}`);
 
-    // TODO: Get platform preference from Settings/Global State
-    const platformPreference = 'both'; // Hardcoded for now
+    // Platform preference removed as backend now defaults to Spotify
+    // const platformPreference = 'both'; // Removed
 
     fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: url, platform: platformPreference }), // Send platform pref
+      body: JSON.stringify({ url: url }), // Only send URL
     })
       .then(response => {
         if (!response.ok) {

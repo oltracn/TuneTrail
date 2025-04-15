@@ -6,7 +6,15 @@ import AddUrlScreen from './src/screens/AddUrlScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import { SearchProvider } from './src/contexts/SearchContext';
 
-const Stack = createStackNavigator();
+// Define the type for the stack navigator parameters
+export type RootStackParamList = {
+  Home: undefined; // No parameters expected for Home screen
+  AddUrl: undefined; // No parameters expected for AddUrl screen
+  Settings: undefined; // No parameters expected for Settings screen
+  // Add other screens and their parameters here if needed
+};
+
+const Stack = createStackNavigator<RootStackParamList>(); // Use the defined type
 
 const App = () => {
   return (

@@ -54,19 +54,26 @@
     *   [x] 完成了重构后的初步测试。
     *   [x] 将重构代码和记忆库更新同步到 GitHub。
     *   [x] 在 `SETUP.md` 中添加了 Vercel 部署 API 服务的说明。
+*   **第五阶段: 开发环境设置 (已完成)**
+    *   [x] 阅读记忆库和 `SETUP.md`。
+    *   [x] 安装 `app/` 和 `api/` 目录的 npm 依赖。
+    *   [x] 根据用户反馈和 `SETUP.md` 指导完成 JDK 17、Android SDK 组件安装和环境变量配置。
+    *   [x] 运行 `npx react-native doctor` 验证核心 Android 环境配置成功。
+    *   [x] 更新 `.clinerules` 添加关于绝对路径和任务完成时更新记忆库的规则。
+    *   [x] 更新 `activeContext.md` 和 `progress.md` 反映环境设置完成。
 
 ## 待办事项 (To-Do Items)
 
-*   **第四阶段 (剩余): 迭代与新功能**
+*   **第六阶段: 迭代与新功能 (原第四阶段剩余部分)**
     *   **问题排查与修复:**
         *   [ ] 解决初步测试中发现的剩余问题 (待明确)。
     *   **阶段 4.2: 实现分享接收功能**
         *   [x] 修改 `AndroidManifest.xml` 以接收分享意图。
         *   [ ] 在 `AddUrlScreen.tsx` 中完善处理传入分享 URL 的逻辑 (当前仅 `console.log`)。
-    *   **阶段 4.3: 平台选择 UI**
-        *   [ ] 在 `SettingsScreen.tsx` 中添加平台选择 UI (例如 Switches)。
-        *   [ ] 将平台选择状态存储起来 (例如使用 `AsyncStorage` 或 Context)。
-        *   [ ] 在 `AddUrlScreen.tsx` 中读取平台选择状态并传递给 API。
+    *   **阶段 4.3: 平台选择 UI (已移除)**
+        *   ~~[ ] 在 `SettingsScreen.tsx` 中添加平台选择 UI (例如 Switches)。~~ (因产品方向调整移除)
+        *   ~~[ ] 将平台选择状态存储起来 (例如使用 `AsyncStorage` 或 Context)。~~ (因产品方向调整移除)
+        *   ~~[ ] 在 `AddUrlScreen.tsx` 中读取平台选择状态并传递给 API。~~ (因产品方向调整移除)
     *   **阶段 4.4: 实现 Google 登录与收藏**
         *   [ ] 配置 Google Cloud OAuth 凭据。
         *   [ ] 集成 Google 登录库。
@@ -81,12 +88,13 @@
 
 *   **核心功能 MVP 完成:** 项目的基础架构、后端 API 和前端应用的核心流程已实现并通过本地测试。
 *   **多页面重构与 Context 集成完成:** 应用已重构为多页面结构，并使用 Context API 管理搜索状态。初步测试通过。
-*   **准备进行问题修复与后续功能开发:** 需要先解决测试中发现的问题，然后继续开发分享接收、平台选择 UI 等功能。
+*   **开发环境就绪:** 核心 Android 开发环境已根据 `SETUP.md` 配置完成，可以开始运行应用或继续开发。
+*   **准备进行问题修复与后续功能开发:** 需要先解决测试中发现的问题，然后继续开发分享接收、Google 登录等功能。
 
 ## 已知问题与挑战 (Known Issues & Challenges)
 
 *   **已解决:** Gradle 依赖下载在特定网络环境下可能非常缓慢，需要配置代理 (全局 `~/.gradle/gradle.properties` 或项目级 `android/gradle.properties`)。
 *   **潜在挑战:**
     *   播客 Shownotes 页面结构的多样性和不稳定性可能给网页抓取带来困难。
-    *   YouTube Music API 的使用限制和认证流程需要仔细处理。
+    *   Spotify API 的使用限制和认证流程需要仔细处理。
     *   准确提取音乐信息（区分歌曲、艺术家、专辑）可能需要复杂的逻辑或 AI 支持。

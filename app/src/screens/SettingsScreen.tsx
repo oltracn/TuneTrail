@@ -5,7 +5,7 @@ const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Settings Screen</Text>
-      {/* TODO: Add platform selection (Switches) and other settings */}
+      {/* Future settings can be added here */}
     </View>
   );
 };

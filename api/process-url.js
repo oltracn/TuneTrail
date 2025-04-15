@@ -87,8 +87,8 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // Get URL and platform preference from request body, default platform to 'both'
-  const { url, platform = 'both' } = req.body;
+  // Get URL from request body
+  const { url } = req.body;
 
   if (!url) {
     return res.status(400).json({ error: 'URL is required in the request body' });
@@ -158,26 +158,17 @@ JSON Array Output:`;
       return res.status(500).json({ error: 'Failed to process text with AI.', details: axiosGeminiError.message });
     }
 
-    // 4. Search Music Platforms
-    const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+    // 4. Search Spotify (YouTube removed)
     const searchResults = [];
     const batchSize = 5;
-    const youtubeApiUrl = 'https://www.googleapis.com/youtube/v3/search';
     const spotifyApiUrl = 'https://api.spotify.com/v1/search';
 
-    // Check required keys based on platform choice
-    const searchYoutube = (platform === 'youtube' || platform === 'both');
-    const searchSpotify = (platform === 'spotify' || platform === 'both') && SPOTIFY_CLIENT_ID && SPOTIFY_CLIENT_SECRET;
-
-    if (searchYoutube && !youtubeApiKey) {
-      console.error('YOUTUBE_API_KEY missing, cannot search YouTube.');
-      return res.status(500).json({ error: 'Server configuration error: YouTube API key missing.' });
+    // Check Spotify credentials
+    const searchSpotify = SPOTIFY_CLIENT_ID && SPOTIFY_CLIENT_SECRET;
+    if (!searchSpotify) {
+        console.error('Spotify credentials not configured. Cannot search Spotify.'); // Changed warn to error
+        return res.status(500).json({ error: 'Server configuration error: Spotify API credentials missing.' }); // Changed message
     }
-    if ((platform === 'spotify' || platform === 'both') && (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET)) {
-        console.warn('Spotify credentials not configured. Skipping Spotify search.');
-        // Allow proceeding without Spotify if creds are missing but platform requested it
-    }
-
 
     for (let i = 0; i < potentialMusicMentions.length; i += batchSize) {
       const batch = potentialMusicMentions.slice(i, i + batchSize);
@@ -185,87 +176,61 @@ JSON Array Output:`;
 
       const promises = batch.map(async (mention) => {
         const searchQuery = mention;
-        let combinedResult = {
+        // Simplified result object - only Spotify fields
+        let result = {
             mention: mention,
-            youtubeTitle: 'Not Found', youtubeMusicLink: null,
-            spotifyTitle: 'Not Found', spotifyArtist: null, spotifyLink: null,
+            spotifyTitle: 'Not Found',
+            spotifyArtist: null,
+            spotifyLink: null,
             errorDetails: null
         };
 
         try {
           const apiPromises = [];
-          let youtubePromiseIndex = -1;
           let spotifyPromiseIndex = -1;
 
-          // Prepare YouTube Promise if needed
-          if (searchYoutube) {
-            apiPromises.push(axios.get(youtubeApiUrl, {
-              params: { part: 'snippet', q: searchQuery, type: 'video', videoCategoryId: '10', maxResults: 1, key: youtubeApiKey },
+          // Prepare Spotify Promise
+          try {
+            const token = await getSpotifyToken();
+            apiPromises.push(axios.get(spotifyApiUrl, {
+              headers: { 'Authorization': `Bearer ${token}` },
+              params: { q: searchQuery, type: 'track', limit: 1 },
+              httpsAgent: agent,
               timeout: 8000,
             }));
-            youtubePromiseIndex = apiPromises.length - 1;
+            spotifyPromiseIndex = apiPromises.length - 1; // Will be 0
+          } catch (tokenError) {
+            console.error(`Failed to get Spotify token for "${searchQuery}":`, tokenError.message);
+            result.spotifyTitle = 'Token Error';
+            result.errorDetails = `SP Token: ${tokenError.message}`;
+            // Skip adding promise if token fails
           }
 
-          // Prepare Spotify Promise if needed
-          if (searchSpotify) {
-            try {
-              const token = await getSpotifyToken();
-              apiPromises.push(axios.get(spotifyApiUrl, {
-                headers: { 'Authorization': `Bearer ${token}` },
-                params: { q: searchQuery, type: 'track', limit: 1 },
-                httpsAgent: agent,
-                timeout: 8000,
-              }));
-              spotifyPromiseIndex = apiPromises.length - 1;
-            } catch (tokenError) {
-              console.error(`Failed to get Spotify token for "${searchQuery}":`, tokenError.message);
-              combinedResult.spotifyTitle = 'Token Error'; // Mark Spotify as error
-              combinedResult.errorDetails = (combinedResult.errorDetails ? combinedResult.errorDetails + '; ' : '') + `SP Token: ${tokenError.message}`;
-              // Don't add a promise for Spotify if token fails
-            }
-          }
 
-          // Execute only the prepared promises
+          // Execute only the Spotify promise if prepared
           if (apiPromises.length > 0) {
               const settledResults = await Promise.allSettled(apiPromises);
 
-              // Process YouTube result if it was executed
-              if (youtubePromiseIndex !== -1) {
-                  const youtubeSettled = settledResults[youtubePromiseIndex];
-                  if (youtubeSettled.status === 'fulfilled' && youtubeSettled.value.data.items?.length > 0) {
-                      const firstResult = youtubeSettled.value.data.items[0];
-                      combinedResult.youtubeTitle = firstResult.snippet.title;
-                      combinedResult.youtubeMusicLink = `https://music.youtube.com/watch?v=${firstResult.id.videoId}`;
-                  } else if (youtubeSettled.status === 'rejected') {
-                      console.error(`Error searching YouTube for "${searchQuery}":`, youtubeSettled.reason.message);
-                      combinedResult.youtubeTitle = 'Search Error';
-                      combinedResult.errorDetails = (combinedResult.errorDetails ? combinedResult.errorDetails + '; ' : '') + `YT: ${youtubeSettled.reason.message}`;
-                  }
-              }
-
-              // Process Spotify result if it was executed
-              if (spotifyPromiseIndex !== -1) {
-                  const spotifySettled = settledResults[spotifyPromiseIndex];
-                  if (spotifySettled.status === 'fulfilled' && spotifySettled.value.data.tracks?.items?.length > 0) {
-                      const firstTrack = spotifySettled.value.data.tracks.items[0];
-                      combinedResult.spotifyTitle = firstTrack.name;
-                      combinedResult.spotifyArtist = firstTrack.artists.map(a => a.name).join(', ');
-                      combinedResult.spotifyLink = firstTrack.external_urls?.spotify || null;
-                  } else if (spotifySettled.status === 'rejected') {
-                      console.error(`Error searching Spotify for "${searchQuery}":`, spotifySettled.reason.message);
-                      combinedResult.spotifyTitle = 'Search Error';
-                      combinedResult.errorDetails = (combinedResult.errorDetails ? combinedResult.errorDetails + '; ' : '') + `SP: ${spotifySettled.reason.message}`;
-                  }
+              // Process Spotify result
+              const spotifySettled = settledResults[spotifyPromiseIndex]; // Index will be 0
+              if (spotifySettled.status === 'fulfilled' && spotifySettled.value.data.tracks?.items?.length > 0) {
+                  const firstTrack = spotifySettled.value.data.tracks.items[0];
+                  result.spotifyTitle = firstTrack.name;
+                  result.spotifyArtist = firstTrack.artists.map(a => a.name).join(', ');
+                  result.spotifyLink = firstTrack.external_urls?.spotify || null;
+              } else if (spotifySettled.status === 'rejected') {
+                  console.error(`Error searching Spotify for "${searchQuery}":`, spotifySettled.reason.message);
+                  result.spotifyTitle = 'Search Error';
+                  result.errorDetails = (result.errorDetails ? result.errorDetails + '; ' : '') + `SP: ${spotifySettled.reason.message}`;
               }
           }
 
         } catch (error) {
           console.error(`Unexpected error processing mention "${searchQuery}":`, error.message);
-          combinedResult.youtubeTitle = 'Processing Error';
-          combinedResult.spotifyTitle = 'Processing Error';
-          combinedResult.errorDetails = error.message;
+          result.spotifyTitle = 'Processing Error'; // Update error field
+          result.errorDetails = error.message;
         }
-        return combinedResult;
+        return result; // Return the simplified result object
       }); // End map
 
       const batchResults = await Promise.allSettled(promises);
@@ -274,6 +239,14 @@ JSON Array Output:`;
           searchResults.push(result.value);
         } else {
           console.error('A search promise was unexpectedly rejected:', result.reason);
+          // Optionally push an error object to searchResults here
+          searchResults.push({
+              mention: 'Unknown (Promise Rejected)', // Attempt to find mention if possible, otherwise use placeholder
+              spotifyTitle: 'Promise Error',
+              spotifyArtist: null,
+              spotifyLink: null,
+              errorDetails: `Promise rejected: ${result.reason?.message || result.reason}`
+          });
         }
       });
 
@@ -285,7 +258,7 @@ JSON Array Output:`;
     // 5. Return Final Results
     res.status(200).json({
       title: pageTitle,
-      results: searchResults,
+      results: searchResults, // Contains only Spotify results now
     });
 
   } catch (error) {

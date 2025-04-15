@@ -18,6 +18,7 @@ type SearchContextType = {
   setIsLoading: (isLoading: boolean) => void;
   error: string | null;
   setError: (error: string | null) => void;
+  clearResults: () => void; // Add clearResults function type
 };
 
 // 创建上下文
@@ -30,6 +31,12 @@ export const SearchProvider: React.FC<{children: React.ReactNode}> = ({ children
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Define the clearResults function
+  const clearResults = () => {
+    setResults([]);
+    setError(null); // Also clear errors when clearing results
+  };
+
   return (
     <SearchContext.Provider
       value={{
@@ -41,6 +48,7 @@ export const SearchProvider: React.FC<{children: React.ReactNode}> = ({ children
         setIsLoading,
         error,
         setError,
+        clearResults, // Add clearResults to the context value
       }}
     >
       {children}

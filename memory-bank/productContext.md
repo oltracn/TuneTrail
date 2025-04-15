@@ -2,14 +2,14 @@
 
 ## 项目目的 (Project Purpose)
 
-*   解决用户在播客中发现新音乐后，需要手动在 YouTube Music 中搜索这些曲目的繁琐问题。
-*   通过自动化流程，简化从播客 Shownotes 网页链接中提取音乐信息并在 YouTube Music 中查找的过程。
+*   解决用户在播客中发现新音乐后，需要手动在 Spotify 中搜索这些曲目的繁琐问题。
+*   通过自动化流程，简化从播客 Shownotes 网页链接中提取音乐信息并在 Spotify 中查找的过程。
 
 ## 目标用户 (Target Users)
 
 *   经常收听播客并从中发现音乐的用户。
 *   希望简化音乐发现和查找流程的用户。
-*   YouTube Music 的使用者。
+*   Spotify 的使用者 (或音乐流媒体用户)。
 
 ## 核心功能 (Core Functionality)
 
@@ -17,8 +17,8 @@
     1.  用户在 TuneTrail 应用中粘贴播客 Shownotes 的网页 URL。
     2.  用户点击按钮启动分析。
     3.  应用（或其后端服务）抓取并解析网页内容，识别音乐信息（如：歌曲名、艺术家）。
-    4.  应用使用识别出的信息调用 YouTube Music API 进行搜索。
-    5.  应用在结果页面展示提取出的音乐列表，并提供指向 YouTube Music 的链接。
+    4.  应用使用识别出的信息调用 Spotify API 进行搜索。
+    5.  应用在结果页面展示提取出的音乐列表，并提供指向 Spotify 的链接。
 
 ## 用户体验目标 (User Experience Goals)
 
